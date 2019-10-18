@@ -31,31 +31,27 @@ struct IRCOM_t {
     /// IrDA Receiver Pulse Length Control Register - 1 bytes
     struct RXPLCTRL : public reg8_t<BASE_ADDRESS + 0x0002> {
     };
-};
-
-namespace IRCOM {
 
     // Event channel selection
-    class EVSEL {
-    private:
-        enum EVSEL_ {
-            OFF_ = 0x00, // No Event Source
-            _0_ = 0x08, // Event Channel 0
-            _1_ = 0x09, // Event Channel 1
-            _2_ = 0x0A, // Event Channel 2
-            _3_ = 0x0B, // Event Channel 3
-            _4_ = 0x0C, // Event Channel 4
-            _5_ = 0x0D, // Event Channel 5
-            _6_ = 0x0E, // Event Channel 6
-            _7_ = 0x0F, // Event Channel 7
-        };
-        EVSEL_ value_;
+    class EVSELv {
     public:
-        static const EVSEL OFF, _0, _1, _2, _3, _4, _5, _6, _7;
-        explicit EVSEL(const EVSEL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum EVSEL_ {
+            OFF = 0x00, // No Event Source
+            _0 = 0x08, // Event Channel 0
+            _1 = 0x09, // Event Channel 1
+            _2 = 0x0A, // Event Channel 2
+            _3 = 0x0B, // Event Channel 3
+            _4 = 0x0C, // Event Channel 4
+            _5 = 0x0D, // Event Channel 5
+            _6 = 0x0E, // Event Channel 6
+            _7 = 0x0F, // Event Channel 7
+        };
+        EVSELv(const EVSEL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
+};
 
-} // namespace IRCOM
 } // namespace device

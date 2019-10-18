@@ -86,10 +86,7 @@ struct PR_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0006, 0x02, 1> TC1;    //< Port F Timer/Counter1 using None
         typedef reg_field_t<BASE_ADDRESS + 0x0006, 0x01, 0> TC0;    //< Port F Timer/Counter0 using None
     };
+
 };
 
-namespace PR {
-
-
-} // namespace PR
 } // namespace device

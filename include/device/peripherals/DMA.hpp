@@ -82,8 +82,8 @@ struct DMA_CH_t {
 
     /// Channel Destination Address 2 - 1 bytes
     struct DESTADDR2 : public reg8_t<BASE_ADDRESS + 0x000E> {
-    };
-};
+    };};
+
 /**
  * DMA
  * DMA Controller
@@ -139,259 +139,245 @@ struct DMA_t {
     /// DMA Channel 3
     DMA_CH_t<BASE_ADDRESS + 0x0040> CH3;
 
-};
-
-namespace DMA {
 
     // Burst mode
-    class CH_BURSTLEN {
-    private:
-        enum CH_BURSTLEN_ {
-            _1BYTE_ = 0x00, // 1-byte burst mode
-            _2BYTE_ = 0x01, // 2-byte burst mode
-            _4BYTE_ = 0x02, // 4-byte burst mode
-            _8BYTE_ = 0x03, // 8-byte burst mode
-        };
-        CH_BURSTLEN_ value_;
+    class CH_BURSTLENv {
     public:
-        static const CH_BURSTLEN _1BYTE, _2BYTE, _4BYTE, _8BYTE;
-        explicit CH_BURSTLEN(const CH_BURSTLEN_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CH_BURSTLEN_ {
+            _1BYTE = 0x00, // 1-byte burst mode
+            _2BYTE = 0x01, // 2-byte burst mode
+            _4BYTE = 0x02, // 4-byte burst mode
+            _8BYTE = 0x03, // 8-byte burst mode
+        };
+        CH_BURSTLENv(const CH_BURSTLEN_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Source address reload mode
-    class CH_SRCRELOAD {
-    private:
-        enum CH_SRCRELOAD_ {
-            NONE_ = 0x00, // No reload
-            BLOCK_ = 0x01, // Reload at end of block
-            BURST_ = 0x02, // Reload at end of burst
-            TRANSACTION_ = 0x03, // Reload at end of transaction
-        };
-        CH_SRCRELOAD_ value_;
+    class CH_SRCRELOADv {
     public:
-        static const CH_SRCRELOAD NONE, BLOCK, BURST, TRANSACTION;
-        explicit CH_SRCRELOAD(const CH_SRCRELOAD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CH_SRCRELOAD_ {
+            NONE = 0x00, // No reload
+            BLOCK = 0x01, // Reload at end of block
+            BURST = 0x02, // Reload at end of burst
+            TRANSACTION = 0x03, // Reload at end of transaction
+        };
+        CH_SRCRELOADv(const CH_SRCRELOAD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Source addressing mode
-    class CH_SRCDIR {
-    private:
-        enum CH_SRCDIR_ {
-            FIXED_ = 0x00, // Fixed
-            INC_ = 0x01, // Increment
-            DEC_ = 0x02, // Decrement
-        };
-        CH_SRCDIR_ value_;
+    class CH_SRCDIRv {
     public:
-        static const CH_SRCDIR FIXED, INC, DEC;
-        explicit CH_SRCDIR(const CH_SRCDIR_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CH_SRCDIR_ {
+            FIXED = 0x00, // Fixed
+            INC = 0x01, // Increment
+            DEC = 0x02, // Decrement
+        };
+        CH_SRCDIRv(const CH_SRCDIR_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Destination adress reload mode
-    class CH_DESTRELOAD {
-    private:
-        enum CH_DESTRELOAD_ {
-            NONE_ = 0x00, // No reload
-            BLOCK_ = 0x01, // Reload at end of block
-            BURST_ = 0x02, // Reload at end of burst
-            TRANSACTION_ = 0x03, // Reload at end of transaction
-        };
-        CH_DESTRELOAD_ value_;
+    class CH_DESTRELOADv {
     public:
-        static const CH_DESTRELOAD NONE, BLOCK, BURST, TRANSACTION;
-        explicit CH_DESTRELOAD(const CH_DESTRELOAD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CH_DESTRELOAD_ {
+            NONE = 0x00, // No reload
+            BLOCK = 0x01, // Reload at end of block
+            BURST = 0x02, // Reload at end of burst
+            TRANSACTION = 0x03, // Reload at end of transaction
+        };
+        CH_DESTRELOADv(const CH_DESTRELOAD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Destination adressing mode
-    class CH_DESTDIR {
-    private:
-        enum CH_DESTDIR_ {
-            FIXED_ = 0x00, // Fixed
-            INC_ = 0x01, // Increment
-            DEC_ = 0x02, // Decrement
-        };
-        CH_DESTDIR_ value_;
+    class CH_DESTDIRv {
     public:
-        static const CH_DESTDIR FIXED, INC, DEC;
-        explicit CH_DESTDIR(const CH_DESTDIR_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CH_DESTDIR_ {
+            FIXED = 0x00, // Fixed
+            INC = 0x01, // Increment
+            DEC = 0x02, // Decrement
+        };
+        CH_DESTDIRv(const CH_DESTDIR_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Transfer trigger source
-    class CH_TRIGSRC {
-    private:
-        enum CH_TRIGSRC_ {
-            OFF_ = 0x00, // Off software triggers only
-            EVSYS_CH0_ = 0x01, // Event System Channel 0
-            EVSYS_CH1_ = 0x02, // Event System Channel 1
-            EVSYS_CH2_ = 0x03, // Event System Channel 2
-            AES_ = 0x04, // AES
-            ADCA_CH0_ = 0x10, // ADCA Channel 0
-            ADCA_CH1_ = 0x11, // ADCA Channel 1
-            ADCA_CH2_ = 0x12, // ADCA Channel 2
-            ADCA_CH3_ = 0x13, // ADCA Channel 3
-            ADCA_CH4_ = 0x14, // ADCA Channel 0,1,2,3 combined
-            DACA_CH0_ = 0x15, // DACA Channel 0
-            DACA_CH1_ = 0x16, // DACA Channel 1
-            ADCB_CH0_ = 0x20, // ADCB Channel 0
-            ADCB_CH1_ = 0x21, // ADCB Channel 1
-            ADCB_CH2_ = 0x22, // ADCB Channel 2
-            ADCB_CH3_ = 0x23, // ADCB Channel 3
-            ADCB_CH4_ = 0x24, // ADCB Channel 0,1,2,3 combined
-            DACB_CH0_ = 0x25, // DACB Channel 0
-            DACB_CH1_ = 0x26, // DACB Channel 1
-            TCC0_OVF_ = 0x40, // Timer/Counter C0 Overflow
-            TCC0_ERR_ = 0x41, // Timer/Counter C0 Error
-            TCC0_CCA_ = 0x42, // Timer/Counter C0 Compare or Capture A
-            TCC0_CCB_ = 0x43, // Timer/Counter C0 Compare or Capture B
-            TCC0_CCC_ = 0x44, // Timer/Counter C0 Compare or Capture C
-            TCC0_CCD_ = 0x45, // Timer/Counter C0 Compare or Capture D
-            TCC1_OVF_ = 0x46, // Timer/Counter C1 Overflow
-            TCC1_ERR_ = 0x47, // Timer/Counter C1 Error
-            TCC1_CCA_ = 0x48, // Timer/Counter C1 Compare or Capture A
-            TCC1_CCB_ = 0x49, // Timer/Counter C1 Compare or Capture B
-            SPIC_ = 0x4A, // SPI C Transfer Complete
-            USARTC0_RXC_ = 0x4B, // USART C0 Receive Complete
-            USARTC0_DRE_ = 0x4C, // USART C0 Data Register Empty
-            USARTC1_RXC_ = 0x4E, // USART C1 Receive Complete
-            USARTC1_DRE_ = 0x4F, // USART C1 Data Register Empty
-            TCD0_OVF_ = 0x60, // Timer/Counter D0 Overflow
-            TCD0_ERR_ = 0x61, // Timer/Counter D0 Error
-            TCD0_CCA_ = 0x62, // Timer/Counter D0 Compare or Capture A
-            TCD0_CCB_ = 0x63, // Timer/Counter D0 Compare or Capture B
-            TCD0_CCC_ = 0x64, // Timer/Counter D0 Compare or Capture C
-            TCD0_CCD_ = 0x65, // Timer/Counter D0 Compare or Capture D
-            TCD1_OVF_ = 0x66, // Timer/Counter D1 Overflow
-            TCD1_ERR_ = 0x67, // Timer/Counter D1 Error
-            TCD1_CCA_ = 0x68, // Timer/Counter D1 Compare or Capture A
-            TCD1_CCB_ = 0x69, // Timer/Counter D1 Compare or Capture B
-            SPID_ = 0x6A, // SPI D Transfer Complete
-            USARTD0_RXC_ = 0x6B, // USART D0 Receive Complete
-            USARTD0_DRE_ = 0x6C, // USART D0 Data Register Empty
-            USARTD1_RXC_ = 0x6E, // USART D1 Receive Complete
-            USARTD1_DRE_ = 0x6F, // USART D1 Data Register Empty
-            TCE0_OVF_ = 0x80, // Timer/Counter E0 Overflow
-            TCE0_ERR_ = 0x81, // Timer/Counter E0 Error
-            TCE0_CCA_ = 0x82, // Timer/Counter E0 Compare or Capture A
-            TCE0_CCB_ = 0x83, // Timer/Counter E0 Compare or Capture B
-            TCE0_CCC_ = 0x84, // Timer/Counter E0 Compare or Capture C
-            TCE0_CCD_ = 0x85, // Timer/Counter E0 Compare or Capture D
-            TCE1_OVF_ = 0x86, // Timer/Counter E1 Overflow
-            TCE1_ERR_ = 0x87, // Timer/Counter E1 Error
-            TCE1_CCA_ = 0x88, // Timer/Counter E1 Compare or Capture A
-            TCE1_CCB_ = 0x89, // Timer/Counter E1 Compare or Capture B
-            SPIE_ = 0x8A, // SPI E Transfer Complete
-            USARTE0_RXC_ = 0x8B, // USART E0 Receive Complete
-            USARTE0_DRE_ = 0x8C, // USART E0 Data Register Empty
-            USARTE1_RXC_ = 0x8E, // USART E1 Receive Complete
-            USARTE1_DRE_ = 0x8F, // USART E1 Data Register Empty
-            TCF0_OVF_ = 0xA0, // Timer/Counter F0 Overflow
-            TCF0_ERR_ = 0xA1, // Timer/Counter F0 Error
-            TCF0_CCA_ = 0xA2, // Timer/Counter F0 Compare or Capture A
-            TCF0_CCB_ = 0xA3, // Timer/Counter F0 Compare or Capture B
-            TCF0_CCC_ = 0xA4, // Timer/Counter F0 Compare or Capture C
-            TCF0_CCD_ = 0xA5, // Timer/Counter F0 Compare or Capture D
-            TCF1_OVF_ = 0xA6, // Timer/Counter F1 Overflow
-            TCF1_ERR_ = 0xA7, // Timer/Counter F1 Error
-            TCF1_CCA_ = 0xA8, // Timer/Counter F1 Compare or Capture A
-            TCF1_CCB_ = 0xA9, // Timer/Counter F1 Compare or Capture B
-            SPIF_ = 0xAA, // SPI F Transfer Complete
-            USARTF0_RXC_ = 0xAB, // USART F0 Receive Complete
-            USARTF0_DRE_ = 0xAC, // USART F0 Data Register Empty
-            USARTF1_RXC_ = 0xAE, // USART F1 Receive Complete
-            USARTF1_DRE_ = 0xAF, // USART F1 Data Register Empty
-        };
-        CH_TRIGSRC_ value_;
+    class CH_TRIGSRCv {
     public:
-        static const CH_TRIGSRC OFF, EVSYS_CH0, EVSYS_CH1, EVSYS_CH2, AES, ADCA_CH0, ADCA_CH1, ADCA_CH2, ADCA_CH3, ADCA_CH4, DACA_CH0, DACA_CH1, ADCB_CH0, ADCB_CH1, ADCB_CH2, ADCB_CH3, ADCB_CH4, DACB_CH0, DACB_CH1, TCC0_OVF, TCC0_ERR, TCC0_CCA, TCC0_CCB, TCC0_CCC, TCC0_CCD, TCC1_OVF, TCC1_ERR, TCC1_CCA, TCC1_CCB, SPIC, USARTC0_RXC, USARTC0_DRE, USARTC1_RXC, USARTC1_DRE, TCD0_OVF, TCD0_ERR, TCD0_CCA, TCD0_CCB, TCD0_CCC, TCD0_CCD, TCD1_OVF, TCD1_ERR, TCD1_CCA, TCD1_CCB, SPID, USARTD0_RXC, USARTD0_DRE, USARTD1_RXC, USARTD1_DRE, TCE0_OVF, TCE0_ERR, TCE0_CCA, TCE0_CCB, TCE0_CCC, TCE0_CCD, TCE1_OVF, TCE1_ERR, TCE1_CCA, TCE1_CCB, SPIE, USARTE0_RXC, USARTE0_DRE, USARTE1_RXC, USARTE1_DRE, TCF0_OVF, TCF0_ERR, TCF0_CCA, TCF0_CCB, TCF0_CCC, TCF0_CCD, TCF1_OVF, TCF1_ERR, TCF1_CCA, TCF1_CCB, SPIF, USARTF0_RXC, USARTF0_DRE, USARTF1_RXC, USARTF1_DRE;
-        explicit CH_TRIGSRC(const CH_TRIGSRC_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CH_TRIGSRC_ {
+            OFF = 0x00, // Off software triggers only
+            EVSYS_CH0 = 0x01, // Event System Channel 0
+            EVSYS_CH1 = 0x02, // Event System Channel 1
+            EVSYS_CH2 = 0x03, // Event System Channel 2
+            AES = 0x04, // AES
+            ADCA_CH0 = 0x10, // ADCA Channel 0
+            ADCA_CH1 = 0x11, // ADCA Channel 1
+            ADCA_CH2 = 0x12, // ADCA Channel 2
+            ADCA_CH3 = 0x13, // ADCA Channel 3
+            ADCA_CH4 = 0x14, // ADCA Channel 0,1,2,3 combined
+            DACA_CH0 = 0x15, // DACA Channel 0
+            DACA_CH1 = 0x16, // DACA Channel 1
+            ADCB_CH0 = 0x20, // ADCB Channel 0
+            ADCB_CH1 = 0x21, // ADCB Channel 1
+            ADCB_CH2 = 0x22, // ADCB Channel 2
+            ADCB_CH3 = 0x23, // ADCB Channel 3
+            ADCB_CH4 = 0x24, // ADCB Channel 0,1,2,3 combined
+            DACB_CH0 = 0x25, // DACB Channel 0
+            DACB_CH1 = 0x26, // DACB Channel 1
+            TCC0_OVF = 0x40, // Timer/Counter C0 Overflow
+            TCC0_ERR = 0x41, // Timer/Counter C0 Error
+            TCC0_CCA = 0x42, // Timer/Counter C0 Compare or Capture A
+            TCC0_CCB = 0x43, // Timer/Counter C0 Compare or Capture B
+            TCC0_CCC = 0x44, // Timer/Counter C0 Compare or Capture C
+            TCC0_CCD = 0x45, // Timer/Counter C0 Compare or Capture D
+            TCC1_OVF = 0x46, // Timer/Counter C1 Overflow
+            TCC1_ERR = 0x47, // Timer/Counter C1 Error
+            TCC1_CCA = 0x48, // Timer/Counter C1 Compare or Capture A
+            TCC1_CCB = 0x49, // Timer/Counter C1 Compare or Capture B
+            SPIC = 0x4A, // SPI C Transfer Complete
+            USARTC0_RXC = 0x4B, // USART C0 Receive Complete
+            USARTC0_DRE = 0x4C, // USART C0 Data Register Empty
+            USARTC1_RXC = 0x4E, // USART C1 Receive Complete
+            USARTC1_DRE = 0x4F, // USART C1 Data Register Empty
+            TCD0_OVF = 0x60, // Timer/Counter D0 Overflow
+            TCD0_ERR = 0x61, // Timer/Counter D0 Error
+            TCD0_CCA = 0x62, // Timer/Counter D0 Compare or Capture A
+            TCD0_CCB = 0x63, // Timer/Counter D0 Compare or Capture B
+            TCD0_CCC = 0x64, // Timer/Counter D0 Compare or Capture C
+            TCD0_CCD = 0x65, // Timer/Counter D0 Compare or Capture D
+            TCD1_OVF = 0x66, // Timer/Counter D1 Overflow
+            TCD1_ERR = 0x67, // Timer/Counter D1 Error
+            TCD1_CCA = 0x68, // Timer/Counter D1 Compare or Capture A
+            TCD1_CCB = 0x69, // Timer/Counter D1 Compare or Capture B
+            SPID = 0x6A, // SPI D Transfer Complete
+            USARTD0_RXC = 0x6B, // USART D0 Receive Complete
+            USARTD0_DRE = 0x6C, // USART D0 Data Register Empty
+            USARTD1_RXC = 0x6E, // USART D1 Receive Complete
+            USARTD1_DRE = 0x6F, // USART D1 Data Register Empty
+            TCE0_OVF = 0x80, // Timer/Counter E0 Overflow
+            TCE0_ERR = 0x81, // Timer/Counter E0 Error
+            TCE0_CCA = 0x82, // Timer/Counter E0 Compare or Capture A
+            TCE0_CCB = 0x83, // Timer/Counter E0 Compare or Capture B
+            TCE0_CCC = 0x84, // Timer/Counter E0 Compare or Capture C
+            TCE0_CCD = 0x85, // Timer/Counter E0 Compare or Capture D
+            TCE1_OVF = 0x86, // Timer/Counter E1 Overflow
+            TCE1_ERR = 0x87, // Timer/Counter E1 Error
+            TCE1_CCA = 0x88, // Timer/Counter E1 Compare or Capture A
+            TCE1_CCB = 0x89, // Timer/Counter E1 Compare or Capture B
+            SPIE = 0x8A, // SPI E Transfer Complete
+            USARTE0_RXC = 0x8B, // USART E0 Receive Complete
+            USARTE0_DRE = 0x8C, // USART E0 Data Register Empty
+            USARTE1_RXC = 0x8E, // USART E1 Receive Complete
+            USARTE1_DRE = 0x8F, // USART E1 Data Register Empty
+            TCF0_OVF = 0xA0, // Timer/Counter F0 Overflow
+            TCF0_ERR = 0xA1, // Timer/Counter F0 Error
+            TCF0_CCA = 0xA2, // Timer/Counter F0 Compare or Capture A
+            TCF0_CCB = 0xA3, // Timer/Counter F0 Compare or Capture B
+            TCF0_CCC = 0xA4, // Timer/Counter F0 Compare or Capture C
+            TCF0_CCD = 0xA5, // Timer/Counter F0 Compare or Capture D
+            TCF1_OVF = 0xA6, // Timer/Counter F1 Overflow
+            TCF1_ERR = 0xA7, // Timer/Counter F1 Error
+            TCF1_CCA = 0xA8, // Timer/Counter F1 Compare or Capture A
+            TCF1_CCB = 0xA9, // Timer/Counter F1 Compare or Capture B
+            SPIF = 0xAA, // SPI F Transfer Complete
+            USARTF0_RXC = 0xAB, // USART F0 Receive Complete
+            USARTF0_DRE = 0xAC, // USART F0 Data Register Empty
+            USARTF1_RXC = 0xAE, // USART F1 Receive Complete
+            USARTF1_DRE = 0xAF, // USART F1 Data Register Empty
+        };
+        CH_TRIGSRCv(const CH_TRIGSRC_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Double buffering mode
-    class DBUFMODE {
-    private:
-        enum DBUFMODE_ {
-            DISABLED_ = 0x00, // Double buffering disabled
-            CH01_ = 0x01, // Double buffering enabled on channel 0/1
-            CH23_ = 0x02, // Double buffering enabled on channel 2/3
-            CH01CH23_ = 0x03, // Double buffering enabled on ch. 0/1 and ch. 2/3
-        };
-        DBUFMODE_ value_;
+    class DBUFMODEv {
     public:
-        static const DBUFMODE DISABLED, CH01, CH23, CH01CH23;
-        explicit DBUFMODE(const DBUFMODE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum DBUFMODE_ {
+            DISABLED = 0x00, // Double buffering disabled
+            CH01 = 0x01, // Double buffering enabled on channel 0/1
+            CH23 = 0x02, // Double buffering enabled on channel 2/3
+            CH01CH23 = 0x03, // Double buffering enabled on ch. 0/1 and ch. 2/3
+        };
+        DBUFMODEv(const DBUFMODE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Priority mode
-    class PRIMODE {
-    private:
+    class PRIMODEv {
+    public:
         enum PRIMODE_ {
-            RR0123_ = 0x00, // Round Robin
-            CH0RR123_ = 0x01, // Channel 0 > Round Robin on channel 1/2/3
-            CH01RR23_ = 0x02, // Channel 0 > channel 1 > Round Robin on channel 2/3
-            CH0123_ = 0x03, // Channel 0 > channel 1 > channel 2 > channel 3
+            RR0123 = 0x00, // Round Robin
+            CH0RR123 = 0x01, // Channel 0 > Round Robin on channel 1/2/3
+            CH01RR23 = 0x02, // Channel 0 > channel 1 > Round Robin on channel 2/3
+            CH0123 = 0x03, // Channel 0 > channel 1 > channel 2 > channel 3
         };
-        PRIMODE_ value_;
-    public:
-        static const PRIMODE RR0123, CH0RR123, CH01RR23, CH0123;
-        explicit PRIMODE(const PRIMODE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        PRIMODEv(const PRIMODE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Interrupt level
-    class CH_ERRINTLVL {
-    private:
+    class CH_ERRINTLVLv {
+    public:
         enum CH_ERRINTLVL_ {
-            OFF_ = 0x00, // Interrupt disabled
-            LO_ = 0x01, // Low level
-            MED_ = 0x02, // Medium level
-            HI_ = 0x03, // High level
+            OFF = 0x00, // Interrupt disabled
+            LO = 0x01, // Low level
+            MED = 0x02, // Medium level
+            HI = 0x03, // High level
         };
-        CH_ERRINTLVL_ value_;
-    public:
-        static const CH_ERRINTLVL OFF, LO, MED, HI;
-        explicit CH_ERRINTLVL(const CH_ERRINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        CH_ERRINTLVLv(const CH_ERRINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Interrupt level
-    class CH_TRNINTLVL {
-    private:
+    class CH_TRNINTLVLv {
+    public:
         enum CH_TRNINTLVL_ {
-            OFF_ = 0x00, // Interrupt disabled
-            LO_ = 0x01, // Low level
-            MED_ = 0x02, // Medium level
-            HI_ = 0x03, // High level
+            OFF = 0x00, // Interrupt disabled
+            LO = 0x01, // Low level
+            MED = 0x02, // Medium level
+            HI = 0x03, // High level
         };
-        CH_TRNINTLVL_ value_;
-    public:
-        static const CH_TRNINTLVL OFF, LO, MED, HI;
-        explicit CH_TRNINTLVL(const CH_TRNINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // DMA Interrupts
-    class INTERRUPTS {
+        CH_TRNINTLVLv(const CH_TRNINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
     private:
-        enum DMA_VECTORS_ {
-            CH0_ = 0, // Channel 0 Interrupt
-            CH1_ = 1, // Channel 1 Interrupt
-            CH2_ = 2, // Channel 2 Interrupt
-            CH3_ = 3, // Channel 3 Interrupt
-        };
-        DMA_VECTORS_ value_;
-    public:
-        static const DMA CH0, CH1, CH2, CH3;
-        explicit DMA(const DMA_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        uint8_t value_;
     };
 
-} // namespace DMA
+    // DMA ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            CH0 = 0, // Channel 0 Interrupt
+            CH1 = 1, // Channel 1 Interrupt
+            CH2 = 2, // Channel 2 Interrupt
+            CH3 = 3, // Channel 3 Interrupt
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+};
+
 } // namespace device

@@ -82,10 +82,7 @@ struct GPIO_t {
     /// General Purpose IO Register 15 - 1 bytes
     struct GPIORF : public reg8_t<BASE_ADDRESS + 0x000F> {
     };
+
 };
 
-namespace GPIO {
-
-
-} // namespace GPIO
 } // namespace device

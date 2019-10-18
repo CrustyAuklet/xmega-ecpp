@@ -40,10 +40,7 @@ struct PMIC_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0002, 0x02, 1> MEDLVLEN;    //< Medium Level Enable using None
         typedef reg_field_t<BASE_ADDRESS + 0x0002, 0x01, 0> LOLVLEN;    //< Low Level Enable using None
     };
+
 };
 
-namespace PMIC {
-
-
-} // namespace PMIC
 } // namespace device

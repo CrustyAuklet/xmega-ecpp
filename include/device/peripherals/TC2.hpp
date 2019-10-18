@@ -130,197 +130,183 @@ struct TC2_t {
     /// High Byte Compare D - 1 bytes
     struct HCMPD : public reg8_t<BASE_ADDRESS + 0x002F> {
     };
-};
-
-namespace TC2 {
 
     // Clock Selection
-    class CLKSEL {
-    private:
-        enum CLKSEL_ {
-            OFF_ = 0x00, // Timer Off
-            DIV1_ = 0x01, // System Clock
-            DIV2_ = 0x02, // System Clock / 2
-            DIV4_ = 0x03, // System Clock / 4
-            DIV8_ = 0x04, // System Clock / 8
-            DIV64_ = 0x05, // System Clock / 64
-            DIV256_ = 0x06, // System Clock / 256
-            DIV1024_ = 0x07, // System Clock / 1024
-            EVCH0_ = 0x08, // Event Channel 0
-            EVCH1_ = 0x09, // Event Channel 1
-            EVCH2_ = 0x0A, // Event Channel 2
-            EVCH3_ = 0x0B, // Event Channel 3
-            EVCH4_ = 0x0C, // Event Channel 4
-            EVCH5_ = 0x0D, // Event Channel 5
-            EVCH6_ = 0x0E, // Event Channel 6
-            EVCH7_ = 0x0F, // Event Channel 7
-        };
-        CLKSEL_ value_;
+    class CLKSELv {
     public:
-        static const CLKSEL OFF, DIV1, DIV2, DIV4, DIV8, DIV64, DIV256, DIV1024, EVCH0, EVCH1, EVCH2, EVCH3, EVCH4, EVCH5, EVCH6, EVCH7;
-        explicit CLKSEL(const CLKSEL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CLKSEL_ {
+            OFF = 0x00, // Timer Off
+            DIV1 = 0x01, // System Clock
+            DIV2 = 0x02, // System Clock / 2
+            DIV4 = 0x03, // System Clock / 4
+            DIV8 = 0x04, // System Clock / 8
+            DIV64 = 0x05, // System Clock / 64
+            DIV256 = 0x06, // System Clock / 256
+            DIV1024 = 0x07, // System Clock / 1024
+            EVCH0 = 0x08, // Event Channel 0
+            EVCH1 = 0x09, // Event Channel 1
+            EVCH2 = 0x0A, // Event Channel 2
+            EVCH3 = 0x0B, // Event Channel 3
+            EVCH4 = 0x0C, // Event Channel 4
+            EVCH5 = 0x0D, // Event Channel 5
+            EVCH6 = 0x0E, // Event Channel 6
+            EVCH7 = 0x0F, // Event Channel 7
+        };
+        CLKSELv(const CLKSEL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Byte Mode
-    class BYTEM {
-    private:
-        enum BYTEM_ {
-            NORMAL_ = 0x00, // 16-bit mode
-            BYTEMODE_ = 0x01, // Timer/Counter operating in byte mode only (TC2)
-            SPLITMODE_ = 0x02, // Timer/Counter split into two 8-bit Counters
-        };
-        BYTEM_ value_;
+    class BYTEMv {
     public:
-        static const BYTEM NORMAL, BYTEMODE, SPLITMODE;
-        explicit BYTEM(const BYTEM_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum BYTEM_ {
+            NORMAL = 0x00, // 16-bit mode
+            BYTEMODE = 0x01, // Timer/Counter operating in byte mode only (TC2)
+            SPLITMODE = 0x02, // Timer/Counter split into two 8-bit Counters
+        };
+        BYTEMv(const BYTEM_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // High Byte Underflow Interrupt Level
-    class HUNFINTLVL {
-    private:
-        enum HUNFINTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        HUNFINTLVL_ value_;
+    class HUNFINTLVLv {
     public:
-        static const HUNFINTLVL OFF, LO, MED, HI;
-        explicit HUNFINTLVL(const HUNFINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum HUNFINTLVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        HUNFINTLVLv(const HUNFINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Low Byte Underflow Interrupt Level
-    class LUNFINTLVL {
-    private:
-        enum LUNFINTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        LUNFINTLVL_ value_;
+    class LUNFINTLVLv {
     public:
-        static const LUNFINTLVL OFF, LO, MED, HI;
-        explicit LUNFINTLVL(const LUNFINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum LUNFINTLVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        LUNFINTLVLv(const LUNFINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Low Byte Compare D Interrupt Level
-    class LCMPDINTLVL {
-    private:
-        enum LCMPDINTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        LCMPDINTLVL_ value_;
+    class LCMPDINTLVLv {
     public:
-        static const LCMPDINTLVL OFF, LO, MED, HI;
-        explicit LCMPDINTLVL(const LCMPDINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum LCMPDINTLVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        LCMPDINTLVLv(const LCMPDINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Low Byte Compare C Interrupt Level
-    class LCMPCINTLVL {
-    private:
-        enum LCMPCINTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        LCMPCINTLVL_ value_;
+    class LCMPCINTLVLv {
     public:
-        static const LCMPCINTLVL OFF, LO, MED, HI;
-        explicit LCMPCINTLVL(const LCMPCINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum LCMPCINTLVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        LCMPCINTLVLv(const LCMPCINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Low Byte Compare B Interrupt Level
-    class LCMPBINTLVL {
-    private:
-        enum LCMPBINTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        LCMPBINTLVL_ value_;
+    class LCMPBINTLVLv {
     public:
-        static const LCMPBINTLVL OFF, LO, MED, HI;
-        explicit LCMPBINTLVL(const LCMPBINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum LCMPBINTLVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        LCMPBINTLVLv(const LCMPBINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Low Byte Compare A Interrupt Level
-    class LCMPAINTLVL {
-    private:
+    class LCMPAINTLVLv {
+    public:
         enum LCMPAINTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
         };
-        LCMPAINTLVL_ value_;
-    public:
-        static const LCMPAINTLVL OFF, LO, MED, HI;
-        explicit LCMPAINTLVL(const LCMPAINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        LCMPAINTLVLv(const LCMPAINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Timer/Counter Command
-    class CMD {
-    private:
+    class CMDv {
+    public:
         enum CMD_ {
-            NONE_ = 0x00, // No Command
-            RESTART_ = 0x02, // Force Restart
-            RESET_ = 0x03, // Force Hard Reset
+            NONE = 0x00, // No Command
+            RESTART = 0x02, // Force Restart
+            RESET = 0x03, // Force Hard Reset
         };
-        CMD_ value_;
-    public:
-        static const CMD NONE, RESTART, RESET;
-        explicit CMD(const CMD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        CMDv(const CMD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Timer/Counter Command
-    class CMDEN {
-    private:
+    class CMDENv {
+    public:
         enum CMDEN_ {
-            LOW_ = 0x01, // Low Byte Timer/Counter
-            HIGH_ = 0x02, // High Byte Timer/Counter
-            BOTH_ = 0x03, // Both Low Byte and High Byte Timer/Counters
+            LOW = 0x01, // Low Byte Timer/Counter
+            HIGH = 0x02, // High Byte Timer/Counter
+            BOTH = 0x03, // Both Low Byte and High Byte Timer/Counters
         };
-        CMDEN_ value_;
-    public:
-        static const CMDEN LOW, HIGH, BOTH;
-        explicit CMDEN(const CMDEN_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // TC2 Interrupts
-    class INTERRUPTS {
+        CMDENv(const CMDEN_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
     private:
-        enum TC2_VECTORS_ {
-            LUNF_ = 0, // Low Byte Underflow Interrupt
-            HUNF_ = 1, // High Byte Underflow Interrupt
-            LCMPA_ = 2, // Low Byte Compare A Interrupt
-            LCMPB_ = 3, // Low Byte Compare B Interrupt
-            LCMPC_ = 4, // Low Byte Compare C Interrupt
-            LCMPD_ = 5, // Low Byte Compare D Interrupt
-        };
-        TC2_VECTORS_ value_;
-    public:
-        static const TC2 LUNF, HUNF, LCMPA, LCMPB, LCMPC, LCMPD;
-        explicit TC2(const TC2_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        uint8_t value_;
     };
 
-} // namespace TC2
+    // TC2 ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            LUNF = 0, // Low Byte Underflow Interrupt
+            HUNF = 1, // High Byte Underflow Interrupt
+            LCMPA = 2, // Low Byte Compare A Interrupt
+            LCMPB = 3, // Low Byte Compare B Interrupt
+            LCMPC = 4, // Low Byte Compare C Interrupt
+            LCMPD = 5, // Low Byte Compare D Interrupt
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+};
+
 } // namespace device

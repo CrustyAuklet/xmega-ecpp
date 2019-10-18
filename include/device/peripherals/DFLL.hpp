@@ -45,10 +45,7 @@ struct DFLL_t {
     /// Oscillator Compare Register 2 - 1 bytes
     struct COMP2 : public reg8_t<BASE_ADDRESS + 0x0006> {
     };
+
 };
 
-namespace DFLL {
-
-
-} // namespace DFLL
 } // namespace device

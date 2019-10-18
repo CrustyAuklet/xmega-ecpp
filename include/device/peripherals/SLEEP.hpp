@@ -24,27 +24,23 @@ struct SLEEP_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0000, 0x0E, 1> SMODE;    //< Sleep Mode using SLEEP_SMODE
         typedef reg_field_t<BASE_ADDRESS + 0x0000, 0x01, 0> SEN;    //< Sleep Enable using None
     };
-};
-
-namespace SLEEP {
 
     // Sleep Mode
-    class SMODE {
-    private:
-        enum SMODE_ {
-            IDLE_ = 0x00, // Idle mode
-            PDOWN_ = 0x02, // Power-down Mode
-            PSAVE_ = 0x03, // Power-save Mode
-            STDBY_ = 0x06, // Standby Mode
-            ESTDBY_ = 0x07, // Extended Standby Mode
-        };
-        SMODE_ value_;
+    class SMODEv {
     public:
-        static const SMODE IDLE, PDOWN, PSAVE, STDBY, ESTDBY;
-        explicit SMODE(const SMODE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum SMODE_ {
+            IDLE = 0x00, // Idle mode
+            PDOWN = 0x02, // Power-down Mode
+            PSAVE = 0x03, // Power-save Mode
+            STDBY = 0x06, // Standby Mode
+            ESTDBY = 0x07, // Extended Standby Mode
+        };
+        SMODEv(const SMODE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
+};
 
-} // namespace SLEEP
 } // namespace device

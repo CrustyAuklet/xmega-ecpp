@@ -89,158 +89,146 @@ struct AC_t {
     struct CURRCALIB : public reg8_t<BASE_ADDRESS + 0x0009> {
         typedef reg_field_t<BASE_ADDRESS + 0x0009, 0x0F, 0> CALIB;    //< Current Source Calibration using None
     };
-};
-
-namespace AC {
 
     // Interrupt mode
-    class INTMODE {
-    private:
-        enum INTMODE_ {
-            BOTHEDGES_ = 0x00, // Interrupt on both edges
-            FALLING_ = 0x02, // Interrupt on falling edge
-            RISING_ = 0x03, // Interrupt on rising edge
-        };
-        INTMODE_ value_;
+    class INTMODEv {
     public:
-        static const INTMODE BOTHEDGES, FALLING, RISING;
-        explicit INTMODE(const INTMODE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum INTMODE_ {
+            BOTHEDGES = 0x00, // Interrupt on both edges
+            FALLING = 0x02, // Interrupt on falling edge
+            RISING = 0x03, // Interrupt on rising edge
+        };
+        INTMODEv(const INTMODE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Interrupt level
-    class INTLVL {
-    private:
-        enum INTLVL_ {
-            OFF_ = 0x00, // Interrupt disabled
-            LO_ = 0x01, // Low level
-            MED_ = 0x02, // Medium level
-            HI_ = 0x03, // High level
-        };
-        INTLVL_ value_;
+    class INTLVLv {
     public:
-        static const INTLVL OFF, LO, MED, HI;
-        explicit INTLVL(const INTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum INTLVL_ {
+            OFF = 0x00, // Interrupt disabled
+            LO = 0x01, // Low level
+            MED = 0x02, // Medium level
+            HI = 0x03, // High level
+        };
+        INTLVLv(const INTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Hysteresis mode selection
-    class HYSMODE {
-    private:
-        enum HYSMODE_ {
-            NO_ = 0x00, // No hysteresis
-            SMALL_ = 0x01, // Small hysteresis
-            LARGE_ = 0x02, // Large hysteresis
-        };
-        HYSMODE_ value_;
+    class HYSMODEv {
     public:
-        static const HYSMODE NO, SMALL, LARGE;
-        explicit HYSMODE(const HYSMODE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum HYSMODE_ {
+            NO = 0x00, // No hysteresis
+            SMALL = 0x01, // Small hysteresis
+            LARGE = 0x02, // Large hysteresis
+        };
+        HYSMODEv(const HYSMODE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Positive input multiplexer selection
-    class MUXPOS {
-    private:
-        enum MUXPOS_ {
-            PIN0_ = 0x00, // Pin 0
-            PIN1_ = 0x01, // Pin 1
-            PIN2_ = 0x02, // Pin 2
-            PIN3_ = 0x03, // Pin 3
-            PIN4_ = 0x04, // Pin 4
-            PIN5_ = 0x05, // Pin 5
-            PIN6_ = 0x06, // Pin 6
-            DAC_ = 0x07, // DAC output
-        };
-        MUXPOS_ value_;
+    class MUXPOSv {
     public:
-        static const MUXPOS PIN0, PIN1, PIN2, PIN3, PIN4, PIN5, PIN6, DAC;
-        explicit MUXPOS(const MUXPOS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum MUXPOS_ {
+            PIN0 = 0x00, // Pin 0
+            PIN1 = 0x01, // Pin 1
+            PIN2 = 0x02, // Pin 2
+            PIN3 = 0x03, // Pin 3
+            PIN4 = 0x04, // Pin 4
+            PIN5 = 0x05, // Pin 5
+            PIN6 = 0x06, // Pin 6
+            DAC = 0x07, // DAC output
+        };
+        MUXPOSv(const MUXPOS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Negative input multiplexer selection
-    class MUXNEG {
-    private:
-        enum MUXNEG_ {
-            PIN0_ = 0x00, // Pin 0
-            PIN1_ = 0x01, // Pin 1
-            PIN3_ = 0x02, // Pin 3
-            PIN5_ = 0x03, // Pin 5
-            PIN7_ = 0x04, // Pin 7
-            DAC_ = 0x05, // DAC output
-            BANDGAP_ = 0x06, // Bandgap Reference
-            SCALER_ = 0x07, // Internal voltage scaler
-        };
-        MUXNEG_ value_;
+    class MUXNEGv {
     public:
-        static const MUXNEG PIN0, PIN1, PIN3, PIN5, PIN7, DAC, BANDGAP, SCALER;
-        explicit MUXNEG(const MUXNEG_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum MUXNEG_ {
+            PIN0 = 0x00, // Pin 0
+            PIN1 = 0x01, // Pin 1
+            PIN3 = 0x02, // Pin 3
+            PIN5 = 0x03, // Pin 5
+            PIN7 = 0x04, // Pin 7
+            DAC = 0x05, // DAC output
+            BANDGAP = 0x06, // Bandgap Reference
+            SCALER = 0x07, // Internal voltage scaler
+        };
+        MUXNEGv(const MUXNEG_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Windows interrupt mode
-    class WINTMODE {
-    private:
-        enum WINTMODE_ {
-            ABOVE_ = 0x00, // Interrupt on above window
-            INSIDE_ = 0x01, // Interrupt on inside window
-            BELOW_ = 0x02, // Interrupt on below window
-            OUTSIDE_ = 0x03, // Interrupt on outside window
-        };
-        WINTMODE_ value_;
+    class WINTMODEv {
     public:
-        static const WINTMODE ABOVE, INSIDE, BELOW, OUTSIDE;
-        explicit WINTMODE(const WINTMODE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum WINTMODE_ {
+            ABOVE = 0x00, // Interrupt on above window
+            INSIDE = 0x01, // Interrupt on inside window
+            BELOW = 0x02, // Interrupt on below window
+            OUTSIDE = 0x03, // Interrupt on outside window
+        };
+        WINTMODEv(const WINTMODE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Window interrupt level
-    class WINTLVL {
-    private:
-        enum WINTLVL_ {
-            OFF_ = 0x00, // Interrupt disabled
-            LO_ = 0x01, // Low priority
-            MED_ = 0x02, // Medium priority
-            HI_ = 0x03, // High priority
-        };
-        WINTLVL_ value_;
+    class WINTLVLv {
     public:
-        static const WINTLVL OFF, LO, MED, HI;
-        explicit WINTLVL(const WINTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum WINTLVL_ {
+            OFF = 0x00, // Interrupt disabled
+            LO = 0x01, // Low priority
+            MED = 0x02, // Medium priority
+            HI = 0x03, // High priority
+        };
+        WINTLVLv(const WINTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Window mode state
-    class WSTATE {
-    private:
+    class WSTATEv {
+    public:
         enum WSTATE_ {
-            ABOVE_ = 0x00, // Signal above window
-            INSIDE_ = 0x01, // Signal inside window
-            BELOW_ = 0x02, // Signal below window
+            ABOVE = 0x00, // Signal above window
+            INSIDE = 0x01, // Signal inside window
+            BELOW = 0x02, // Signal below window
         };
-        WSTATE_ value_;
-    public:
-        static const WSTATE ABOVE, INSIDE, BELOW;
-        explicit WSTATE(const WSTATE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // AC Interrupts
-    class INTERRUPTS {
+        WSTATEv(const WSTATE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
     private:
-        enum AC_VECTORS_ {
-            AC0_ = 0, // AC0 Interrupt
-            AC1_ = 1, // AC1 Interrupt
-            ACW_ = 2, // ACW Window Mode Interrupt
-        };
-        AC_VECTORS_ value_;
-    public:
-        static const AC AC0, AC1, ACW;
-        explicit AC(const AC_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        uint8_t value_;
     };
 
-} // namespace AC
+    // AC ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            AC0 = 0, // AC0 Interrupt
+            AC1 = 1, // AC1 Interrupt
+            ACW = 2, // ACW Window Mode Interrupt
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+};
+
 } // namespace device

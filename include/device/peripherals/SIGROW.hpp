@@ -154,10 +154,7 @@ struct NVM_PROD_SIGNATURES_t {
     /// DACB1 Calibration Byte 1 - 1 bytes
     struct DACB1GAINCAL : public reg8_t<BASE_ADDRESS + 0x0037> {
     };
+
 };
 
-namespace SIGROW {
-
-
-} // namespace SIGROW
 } // namespace device

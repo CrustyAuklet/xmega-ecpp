@@ -63,10 +63,7 @@ struct MCU_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0009, 0x02, 1> AWEXDLOCK;    //< AWeX on T/C D0 Lock using None
         typedef reg_field_t<BASE_ADDRESS + 0x0009, 0x01, 0> AWEXCLOCK;    //< AWeX on T/C C0 Lock using None
     };
+
 };
 
-namespace MCU {
-
-
-} // namespace MCU
 } // namespace device

@@ -23,6 +23,7 @@ struct rw_reg8_t : public ro_reg8_t, public wo_reg8_t { };
 
 template<addressType address, class mutability_policy = rw_reg8_t>
 struct reg8_t{
+    static const addressType ADDRESS = address;
     static void write(registerType value) {
         mutability_policy::write_reg(reinterpret_cast<volatile registerType*>(address),value);
     }
@@ -50,33 +51,33 @@ struct reg16_t{
 /*** Structures for accessing bitfields within 8-bit registers ***/
 
 struct ro_field_t {
-    static unsigned read_field(volatile registerType* reg, const registerType mask, const registerType offset) {
-        return (*reg >> offset) & mask;
+    static unsigned read_field(volatile registerType* reg, const registerType valMask, const registerType offset) {
+        return (*reg >> offset) & valMask;
     }
 };
 
 struct wo_field_t {
-    static void write_field(volatile registerType* reg, const registerType mask, const registerType offset, const registerType value) {
-        *reg = (value & mask) << offset;
+    static void write_field(volatile registerType* reg, const registerType valMask, const registerType offset, const registerType value) {
+        *reg = (value & valMask) << offset;
     }
 };
 
 struct rw_field_t : public ro_field_t {
-    static void write_field(volatile registerType* reg, const registerType mask, const registerType offset, const registerType value) {
-        *reg = (*reg & ~(mask << offset))|((value & mask) << offset);
+    static void write_field(volatile registerType* reg, const registerType valMask, const registerType offset, const registerType value) {
+        *reg = (*reg & ~(valMask << offset))|((value & valMask) << offset);
     }
 };
 
 template<addressType address, registerType mask, registerType offset, class mutability_policy = rw_field_t>
 struct reg_field_t{
-    static const registerType VAL_MASK = mask;
-    static const registerType BIT_MASK = mask << offset;
+    static const registerType VAL_MASK = mask >> offset;
+    static const registerType BIT_MASK = mask;
     static const registerType SHIFT    = offset;
     static void write(registerType value) {
-        mutability_policy::write_field(reinterpret_cast<volatile registerType*>(address),mask,offset,value);
+        mutability_policy::write_field(reinterpret_cast<volatile registerType*>(address),VAL_MASK,offset,value);
     }
     static registerType read() {
-        return mutability_policy::read_field(reinterpret_cast<volatile registerType*>(address),mask,offset);
+        return mutability_policy::read_field(reinterpret_cast<volatile registerType*>(address),VAL_MASK,offset);
     }
 };
 

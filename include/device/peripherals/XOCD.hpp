@@ -28,10 +28,7 @@ struct OCD_t {
     struct OCDR1 : public reg8_t<BASE_ADDRESS + 0x0001> {
         typedef reg_field_t<BASE_ADDRESS + 0x0001, 0x01, 0> OCDRD;    //< OCDR Dirty using None
     };
+
 };
 
-namespace XOCD {
-
-
-} // namespace XOCD
 } // namespace device

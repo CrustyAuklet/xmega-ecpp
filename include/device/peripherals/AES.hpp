@@ -46,39 +46,34 @@ struct AES_t {
     struct INTCTRL : public reg8_t<BASE_ADDRESS + 0x0004> {
         typedef reg_field_t<BASE_ADDRESS + 0x0004, 0x03, 0> INTLVL;    //< Interrupt level using AES_INTLVL
     };
-};
-
-namespace AES {
 
     // Interrupt level
-    class INTLVL {
-    private:
+    class INTLVLv {
+    public:
         enum INTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
         };
-        INTLVL_ value_;
-    public:
-        static const INTLVL OFF, LO, MED, HI;
-        explicit INTLVL(const INTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // AES Interrupts
-    class INTERRUPTS {
+        INTLVLv(const INTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
     private:
-        enum AES_VECTORS_ {
-            INT_ = 0, // AES Interrupt
-        };
-        AES_VECTORS_ value_;
-    public:
-        static const AES INT;
-        explicit AES(const AES_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        uint8_t value_;
     };
 
-} // namespace AES
+    // AES ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            INT = 0, // AES Interrupt
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+};
+
 } // namespace device

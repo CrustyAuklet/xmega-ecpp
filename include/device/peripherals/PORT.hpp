@@ -148,93 +148,85 @@ struct PORT_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0017, 0x38, 3> OPC;    //< Output/Pull Configuration using PORT_OPC
         typedef reg_field_t<BASE_ADDRESS + 0x0017, 0x07, 0> ISC;    //< Input/Sense Configuration using PORT_ISC
     };
-};
-
-namespace PORT {
 
     // Port Interrupt 0 Level
-    class INT0LVL {
-    private:
-        enum INT0LVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        INT0LVL_ value_;
+    class INT0LVLv {
     public:
-        static const INT0LVL OFF, LO, MED, HI;
-        explicit INT0LVL(const INT0LVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum INT0LVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        INT0LVLv(const INT0LVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Port Interrupt 1 Level
-    class INT1LVL {
-    private:
-        enum INT1LVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        INT1LVL_ value_;
+    class INT1LVLv {
     public:
-        static const INT1LVL OFF, LO, MED, HI;
-        explicit INT1LVL(const INT1LVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum INT1LVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        INT1LVLv(const INT1LVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Output/Pull Configuration
-    class OPC {
-    private:
-        enum OPC_ {
-            TOTEM_ = 0x00, // Totempole
-            BUSKEEPER_ = 0x01, // Totempole w/ Bus keeper on Input and Output
-            PULLDOWN_ = 0x02, // Totempole w/ Pull-down on Input
-            PULLUP_ = 0x03, // Totempole w/ Pull-up on Input
-            WIREDOR_ = 0x04, // Wired OR
-            WIREDAND_ = 0x05, // Wired AND
-            WIREDORPULL_ = 0x06, // Wired OR w/ Pull-down
-            WIREDANDPULL_ = 0x07, // Wired AND w/ Pull-up
-        };
-        OPC_ value_;
+    class OPCv {
     public:
-        static const OPC TOTEM, BUSKEEPER, PULLDOWN, PULLUP, WIREDOR, WIREDAND, WIREDORPULL, WIREDANDPULL;
-        explicit OPC(const OPC_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum OPC_ {
+            TOTEM = 0x00, // Totempole
+            BUSKEEPER = 0x01, // Totempole w/ Bus keeper on Input and Output
+            PULLDOWN = 0x02, // Totempole w/ Pull-down on Input
+            PULLUP = 0x03, // Totempole w/ Pull-up on Input
+            WIREDOR = 0x04, // Wired OR
+            WIREDAND = 0x05, // Wired AND
+            WIREDORPULL = 0x06, // Wired OR w/ Pull-down
+            WIREDANDPULL = 0x07, // Wired AND w/ Pull-up
+        };
+        OPCv(const OPC_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Input/Sense Configuration
-    class ISC {
-    private:
+    class ISCv {
+    public:
         enum ISC_ {
-            BOTHEDGES_ = 0x00, // Sense Both Edges
-            RISING_ = 0x01, // Sense Rising Edge
-            FALLING_ = 0x02, // Sense Falling Edge
-            LEVEL_ = 0x03, // Sense Level (Transparent For Events)
-            INPUT_DISABLE_ = 0x07, // Disable Digital Input Buffer
+            BOTHEDGES = 0x00, // Sense Both Edges
+            RISING = 0x01, // Sense Rising Edge
+            FALLING = 0x02, // Sense Falling Edge
+            LEVEL = 0x03, // Sense Level (Transparent For Events)
+            INPUT_DISABLE = 0x07, // Disable Digital Input Buffer
         };
-        ISC_ value_;
-    public:
-        static const ISC BOTHEDGES, RISING, FALLING, LEVEL, INPUT_DISABLE;
-        explicit ISC(const ISC_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // PORT Interrupts
-    class INTERRUPTS {
+        ISCv(const ISC_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
     private:
-        enum PORT_VECTORS_ {
-            INT0_ = 0, // External Interrupt 0
-            INT1_ = 1, // External Interrupt 1
-        };
-        PORT_VECTORS_ value_;
-    public:
-        static const PORT INT0, INT1;
-        explicit PORT(const PORT_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        uint8_t value_;
     };
 
-} // namespace PORT
+    // PORT ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            INT0 = 0, // External Interrupt 0
+            INT1 = 1, // External Interrupt 1
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+};
+
 } // namespace device

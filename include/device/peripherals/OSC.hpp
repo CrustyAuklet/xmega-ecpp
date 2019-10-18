@@ -69,100 +69,91 @@ struct OSC_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0006, 0x06, 1> RC32MCREF;    //< 32 MHz DFLL Calibration Reference using OSC_RC32MCREF
         typedef reg_field_t<BASE_ADDRESS + 0x0006, 0x01, 0> RC2MCREF;    //< 2 MHz DFLL Calibration Reference using OSC_RC2MCREF
     };
-};
-
-namespace OSC {
 
     // Oscillator Frequency Range
-    class FRQRANGE {
-    private:
-        enum FRQRANGE_ {
-            _04TO2_ = 0x00, // 0.4 - 2 MHz
-            _2TO9_ = 0x01, // 2 - 9 MHz
-            _9TO12_ = 0x02, // 9 - 12 MHz
-            _12TO16_ = 0x03, // 12 - 16 MHz
-        };
-        FRQRANGE_ value_;
+    class FRQRANGEv {
     public:
-        static const FRQRANGE _04TO2, _2TO9, _9TO12, _12TO16;
-        explicit FRQRANGE(const FRQRANGE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum FRQRANGE_ {
+            _04TO2 = 0x00, // 0.4 - 2 MHz
+            _2TO9 = 0x01, // 2 - 9 MHz
+            _9TO12 = 0x02, // 9 - 12 MHz
+            _12TO16 = 0x03, // 12 - 16 MHz
+        };
+        FRQRANGEv(const FRQRANGE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // External Oscillator Selection and Startup Time
-    class XOSCSEL {
-    private:
-        enum XOSCSEL_ {
-            EXTCLK_ = 0x00, // External Clock - 6 CLK
-            _32KHz_ = 0x02, // 32.768 kHz TOSC - 32K CLK
-            XTAL_256CLK_ = 0x03, // 0.4-16 MHz XTAL - 256 CLK
-            XTAL_1KCLK_ = 0x07, // 0.4-16 MHz XTAL - 1K CLK
-            XTAL_16KCLK_ = 0x0B, // 0.4-16 MHz XTAL - 16K CLK
-        };
-        XOSCSEL_ value_;
+    class XOSCSELv {
     public:
-        static const XOSCSEL EXTCLK, _32KHz, XTAL_256CLK, XTAL_1KCLK, XTAL_16KCLK;
-        explicit XOSCSEL(const XOSCSEL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum XOSCSEL_ {
+            EXTCLK = 0x00, // External Clock - 6 CLK
+            _32KHz = 0x02, // 32.768 kHz TOSC - 32K CLK
+            XTAL_256CLK = 0x03, // 0.4-16 MHz XTAL - 256 CLK
+            XTAL_1KCLK = 0x07, // 0.4-16 MHz XTAL - 1K CLK
+            XTAL_16KCLK = 0x0B, // 0.4-16 MHz XTAL - 16K CLK
+        };
+        XOSCSELv(const XOSCSEL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // PLL Clock Source
-    class PLLSRC {
-    private:
-        enum PLLSRC_ {
-            RC2M_ = 0x00, // Internal 2 MHz RC Oscillator
-            RC32M_ = 0x02, // Internal 32 MHz RC Oscillator
-            XOSC_ = 0x03, // External Oscillator
-        };
-        PLLSRC_ value_;
+    class PLLSRCv {
     public:
-        static const PLLSRC RC2M, RC32M, XOSC;
-        explicit PLLSRC(const PLLSRC_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum PLLSRC_ {
+            RC2M = 0x00, // Internal 2 MHz RC Oscillator
+            RC32M = 0x02, // Internal 32 MHz RC Oscillator
+            XOSC = 0x03, // External Oscillator
+        };
+        PLLSRCv(const PLLSRC_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // 2 MHz DFLL Calibration Reference
-    class RC2MCREF {
-    private:
-        enum RC2MCREF_ {
-            RC32K_ = 0x00, // Internal 32.768 kHz RC Oscillator
-            XOSC32K_ = 0x01, // External 32.768 kHz Crystal Oscillator
-        };
-        RC2MCREF_ value_;
+    class RC2MCREFv {
     public:
-        static const RC2MCREF RC32K, XOSC32K;
-        explicit RC2MCREF(const RC2MCREF_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum RC2MCREF_ {
+            RC32K = 0x00, // Internal 32.768 kHz RC Oscillator
+            XOSC32K = 0x01, // External 32.768 kHz Crystal Oscillator
+        };
+        RC2MCREFv(const RC2MCREF_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // 32 MHz DFLL Calibration Reference
-    class RC32MCREF {
-    private:
+    class RC32MCREFv {
+    public:
         enum RC32MCREF_ {
-            RC32K_ = 0x00, // Internal 32.768 kHz RC Oscillator
-            XOSC32K_ = 0x01, // External 32.768 kHz Crystal Oscillator
-            USBSOF_ = 0x02, // USB Start of Frame
+            RC32K = 0x00, // Internal 32.768 kHz RC Oscillator
+            XOSC32K = 0x01, // External 32.768 kHz Crystal Oscillator
+            USBSOF = 0x02, // USB Start of Frame
         };
-        RC32MCREF_ value_;
-    public:
-        static const RC32MCREF RC32K, XOSC32K, USBSOF;
-        explicit RC32MCREF(const RC32MCREF_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // OSC Interrupts
-    class INTERRUPTS {
+        RC32MCREFv(const RC32MCREF_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
     private:
-        enum OSC_VECTORS_ {
-            OSCF_ = 0, // Oscillator Failure Interrupt (NMI)
-        };
-        OSC_VECTORS_ value_;
-    public:
-        static const OSC OSCF;
-        explicit OSC(const OSC_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        uint8_t value_;
     };
 
-} // namespace OSC
+    // OSC ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            OSCF = 0, // Oscillator Failure Interrupt (NMI)
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+};
+
 } // namespace device

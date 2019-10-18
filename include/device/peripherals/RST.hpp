@@ -34,10 +34,7 @@ struct RST_t {
     struct CTRL : public reg8_t<BASE_ADDRESS + 0x0001> {
         typedef reg_field_t<BASE_ADDRESS + 0x0001, 0x01, 0> SWRST;    //< Software Reset using None
     };
+
 };
 
-namespace RST {
-
-
-} // namespace RST
 } // namespace device

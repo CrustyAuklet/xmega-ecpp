@@ -51,149 +51,138 @@ struct NVM_FUSES_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0005, 0x08, 3> EESAVE;    //< Preserve EEPROM Through Chip Erase using None
         typedef reg_field_t<BASE_ADDRESS + 0x0005, 0x07, 0> BODLVL;    //< Brownout Detection Voltage Level using BODLVL
     };
-};
-
-namespace FUSE {
 
     // Boot Loader Section Reset Vector
-    class BOOTRST {
-    private:
-        enum BOOTRST_ {
-            BOOTLDR_ = 0x00, // Boot Loader Reset
-            APPLICATION_ = 0x01, // Application Reset
-        };
-        BOOTRST_ value_;
+    class BOOTRSTv {
     public:
-        static const BOOTRST BOOTLDR, APPLICATION;
-        explicit BOOTRST(const BOOTRST_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum BOOTRST_ {
+            BOOTLDR = 0x00, // Boot Loader Reset
+            APPLICATION = 0x01, // Application Reset
+        };
+        BOOTRSTv(const BOOTRST_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Timer Oscillator pin location
-    class TOSCSEL {
-    private:
+    class TOSCSELv {
+    public:
         enum TOSCSEL_ {
-            ALTERNATE_ = 0x00, // TOSC1 / TOSC2 on separate pins
-            XTAL_ = 0x01, // TOSC1 / TOSC2 shared with XTAL1 / XTAL2
+            ALTERNATE = 0x00, // TOSC1 / TOSC2 on separate pins
+            XTAL = 0x01, // TOSC1 / TOSC2 shared with XTAL1 / XTAL2
         };
-        TOSCSEL_ value_;
-    public:
-        static const TOSCSEL ALTERNATE, XTAL;
-        explicit TOSCSEL(const TOSCSEL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        TOSCSELv(const TOSCSEL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // BOD operation
-    class BOD {
-    private:
+    class BODv {
+    public:
         enum BOD_ {
-            SAMPLED_ = 0x01, // BOD enabled in sampled mode
-            CONTINUOUS_ = 0x02, // BOD enabled continuously
-            DISABLED_ = 0x03, // BOD Disabled
+            SAMPLED = 0x01, // BOD enabled in sampled mode
+            CONTINUOUS = 0x02, // BOD enabled continuously
+            DISABLED = 0x03, // BOD Disabled
         };
-        BOD_ value_;
-    public:
-        static const BOD SAMPLED, CONTINUOUS, DISABLED;
-        explicit BOD(const BOD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        BODv(const BOD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // BOD operation
-    class BODACT {
-    private:
+    class BODACTv {
+    public:
         enum BODACT_ {
-            SAMPLED_ = 0x01, // BOD enabled in sampled mode
-            CONTINUOUS_ = 0x02, // BOD enabled continuously
-            DISABLED_ = 0x03, // BOD Disabled
+            SAMPLED = 0x01, // BOD enabled in sampled mode
+            CONTINUOUS = 0x02, // BOD enabled continuously
+            DISABLED = 0x03, // BOD Disabled
         };
-        BODACT_ value_;
-    public:
-        static const BODACT SAMPLED, CONTINUOUS, DISABLED;
-        explicit BODACT(const BODACT_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        BODACTv(const BODACT_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Watchdog (Window) Timeout Period
-    class WD {
-    private:
+    class WDv {
+    public:
         enum WD_ {
-            _8CLK_ = 0x00, // 8 cycles (8ms @ 3.3V)
-            _16CLK_ = 0x01, // 16 cycles (16ms @ 3.3V)
-            _32CLK_ = 0x02, // 32 cycles (32ms @ 3.3V)
-            _64CLK_ = 0x03, // 64 cycles (64ms @ 3.3V)
-            _128CLK_ = 0x04, // 128 cycles (0.125s @ 3.3V)
-            _256CLK_ = 0x05, // 256 cycles (0.25s @ 3.3V)
-            _512CLK_ = 0x06, // 512 cycles (0.5s @ 3.3V)
-            _1KCLK_ = 0x07, // 1K cycles (1s @ 3.3V)
-            _2KCLK_ = 0x08, // 2K cycles (2s @ 3.3V)
-            _4KCLK_ = 0x09, // 4K cycles (4s @ 3.3V)
-            _8KCLK_ = 0x0A, // 8K cycles (8s @ 3.3V)
+            _8CLK = 0x00, // 8 cycles (8ms @ 3.3V)
+            _16CLK = 0x01, // 16 cycles (16ms @ 3.3V)
+            _32CLK = 0x02, // 32 cycles (32ms @ 3.3V)
+            _64CLK = 0x03, // 64 cycles (64ms @ 3.3V)
+            _128CLK = 0x04, // 128 cycles (0.125s @ 3.3V)
+            _256CLK = 0x05, // 256 cycles (0.25s @ 3.3V)
+            _512CLK = 0x06, // 512 cycles (0.5s @ 3.3V)
+            _1KCLK = 0x07, // 1K cycles (1s @ 3.3V)
+            _2KCLK = 0x08, // 2K cycles (2s @ 3.3V)
+            _4KCLK = 0x09, // 4K cycles (4s @ 3.3V)
+            _8KCLK = 0x0A, // 8K cycles (8s @ 3.3V)
         };
-        WD_ value_;
-    public:
-        static const WD _8CLK, _16CLK, _32CLK, _64CLK, _128CLK, _256CLK, _512CLK, _1KCLK, _2KCLK, _4KCLK, _8KCLK;
-        explicit WD(const WD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        WDv(const WD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Watchdog (Window) Timeout Period
-    class WDP {
-    private:
-        enum WDP_ {
-            _8CLK_ = 0x00, // 8 cycles (8ms @ 3.3V)
-            _16CLK_ = 0x01, // 16 cycles (16ms @ 3.3V)
-            _32CLK_ = 0x02, // 32 cycles (32ms @ 3.3V)
-            _64CLK_ = 0x03, // 64 cycles (64ms @ 3.3V)
-            _128CLK_ = 0x04, // 128 cycles (0.125s @ 3.3V)
-            _256CLK_ = 0x05, // 256 cycles (0.25s @ 3.3V)
-            _512CLK_ = 0x06, // 512 cycles (0.5s @ 3.3V)
-            _1KCLK_ = 0x07, // 1K cycles (1s @ 3.3V)
-            _2KCLK_ = 0x08, // 2K cycles (2s @ 3.3V)
-            _4KCLK_ = 0x09, // 4K cycles (4s @ 3.3V)
-            _8KCLK_ = 0x0A, // 8K cycles (8s @ 3.3V)
-        };
-        WDP_ value_;
+    class WDPv {
     public:
-        static const WDP _8CLK, _16CLK, _32CLK, _64CLK, _128CLK, _256CLK, _512CLK, _1KCLK, _2KCLK, _4KCLK, _8KCLK;
-        explicit WDP(const WDP_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum WDP_ {
+            _8CLK = 0x00, // 8 cycles (8ms @ 3.3V)
+            _16CLK = 0x01, // 16 cycles (16ms @ 3.3V)
+            _32CLK = 0x02, // 32 cycles (32ms @ 3.3V)
+            _64CLK = 0x03, // 64 cycles (64ms @ 3.3V)
+            _128CLK = 0x04, // 128 cycles (0.125s @ 3.3V)
+            _256CLK = 0x05, // 256 cycles (0.25s @ 3.3V)
+            _512CLK = 0x06, // 512 cycles (0.5s @ 3.3V)
+            _1KCLK = 0x07, // 1K cycles (1s @ 3.3V)
+            _2KCLK = 0x08, // 2K cycles (2s @ 3.3V)
+            _4KCLK = 0x09, // 4K cycles (4s @ 3.3V)
+            _8KCLK = 0x0A, // 8K cycles (8s @ 3.3V)
+        };
+        WDPv(const WDP_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Start-up Time
-    class SUT {
-    private:
-        enum SUT_ {
-            _0MS_ = 0x03, // 0 ms
-            _4MS_ = 0x01, // 4 ms
-            _64MS_ = 0x00, // 64 ms
-        };
-        SUT_ value_;
+    class SUTv {
     public:
-        static const SUT _0MS, _4MS, _64MS;
-        explicit SUT(const SUT_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum SUT_ {
+            _0MS = 0x03, // 0 ms
+            _4MS = 0x01, // 4 ms
+            _64MS = 0x00, // 64 ms
+        };
+        SUTv(const SUT_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Brownout Detection Voltage Level
-    class BODLVL {
-    private:
-        enum BODLVL_ {
-            _1V6_ = 0x07, // 1.6 V
-            _1V8_ = 0x06, // 1.8 V
-            _2V0_ = 0x05, // 2.0 V
-            _2V2_ = 0x04, // 2.2 V
-            _2V4_ = 0x03, // 2.4 V
-            _2V6_ = 0x02, // 2.6 V
-            _2V8_ = 0x01, // 2.8 V
-            _3V0_ = 0x00, // 3.0 V
-        };
-        BODLVL_ value_;
+    class BODLVLv {
     public:
-        static const BODLVL _1V6, _1V8, _2V0, _2V2, _2V4, _2V6, _2V8, _3V0;
-        explicit BODLVL(const BODLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum BODLVL_ {
+            _1V6 = 0x07, // 1.6 V
+            _1V8 = 0x06, // 1.8 V
+            _2V0 = 0x05, // 2.0 V
+            _2V2 = 0x04, // 2.2 V
+            _2V4 = 0x03, // 2.4 V
+            _2V6 = 0x02, // 2.6 V
+            _2V8 = 0x01, // 2.8 V
+            _3V0 = 0x00, // 3.0 V
+        };
+        BODLVLv(const BODLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
+};
 
-} // namespace FUSE
 } // namespace device

@@ -51,44 +51,39 @@ struct CRC_t {
     /// Checksum byte 3 - 1 bytes
     struct CHECKSUM3 : public reg8_t<BASE_ADDRESS + 0x0007> {
     };
-};
-
-namespace CRC {
 
     // Reset
-    class RESET {
-    private:
-        enum RESET_ {
-            NO_ = 0x00, // No Reset
-            RESET0_ = 0x02, // Reset CRC with CHECKSUM to all zeros
-            RESET1_ = 0x03, // Reset CRC with CHECKSUM to all ones
-        };
-        RESET_ value_;
+    class RESETv {
     public:
-        static const RESET NO, RESET0, RESET1;
-        explicit RESET(const RESET_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum RESET_ {
+            NO = 0x00, // No Reset
+            RESET0 = 0x02, // Reset CRC with CHECKSUM to all zeros
+            RESET1 = 0x03, // Reset CRC with CHECKSUM to all ones
+        };
+        RESETv(const RESET_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Input Source
-    class SOURCE {
-    private:
-        enum SOURCE_ {
-            DISABLE_ = 0x00, // Disabled
-            IO_ = 0x01, // I/O Interface
-            FLASH_ = 0x02, // Flash
-            DMAC0_ = 0x04, // DMAC Channel 0
-            DMAC1_ = 0x05, // DMAC Channel 1
-            DMAC2_ = 0x06, // DMAC Channel 2
-            DMAC3_ = 0x07, // DMAC Channel 3
-        };
-        SOURCE_ value_;
+    class SOURCEv {
     public:
-        static const SOURCE DISABLE, IO, FLASH, DMAC0, DMAC1, DMAC2, DMAC3;
-        explicit SOURCE(const SOURCE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum SOURCE_ {
+            DISABLE = 0x00, // Disabled
+            IO = 0x01, // I/O Interface
+            FLASH = 0x02, // Flash
+            DMAC0 = 0x04, // DMAC Channel 0
+            DMAC1 = 0x05, // DMAC Channel 1
+            DMAC2 = 0x06, // DMAC Channel 2
+            DMAC3 = 0x07, // DMAC Channel 3
+        };
+        SOURCEv(const SOURCE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
+};
 
-} // namespace CRC
 } // namespace device

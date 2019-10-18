@@ -1,5 +1,5 @@
-#ifndef UT_HAL_DEVICE_FILE_XMEGA128A1U
-#define UT_HAL_DEVICE_FILE_XMEGA128A1U
+#ifndef SEAL_HAL_DEVICE_FILE_XMEGA128A1U
+#define SEAL_HAL_DEVICE_FILE_XMEGA128A1U
 
 #include "peripherals/AC.hpp"
 #include "peripherals/ADC.hpp"
@@ -38,6 +38,9 @@
 #include "peripherals/VPORT.hpp"
 #include "peripherals/WDT.hpp"
 #include "peripherals/XOCD.hpp"
+#include "gpio.hpp"
+
+namespace device {
 
 /********** Peripheral Instances. Mapped to memory. **********/
 typedef device::GPIO_t< 0x0000 > GPIO;    // General Purpose IO Registers
@@ -119,4 +122,96 @@ typedef device::USART_t< 0x0BA0 > USARTF0;    // Universal Synchronous/Asynchron
 typedef device::USART_t< 0x0BB0 > USARTF1;    // Universal Synchronous/Asynchronous Receiver/Transmitter F1
 typedef device::SPI_t< 0x0BC0 > SPIF;    // Serial Peripheral Interface F
 
-#endif  // UT_HAL_DEVICE_FILE_XMEGA128A1U
+/********** GPIO PINS **********/
+typedef gpio_pin< PORTA, 0 > PA0;
+typedef gpio_pin< PORTA, 1 > PA1;
+typedef gpio_pin< PORTA, 2 > PA2;
+typedef gpio_pin< PORTA, 3 > PA3;
+typedef gpio_pin< PORTA, 4 > PA4;
+typedef gpio_pin< PORTA, 5 > PA5;
+typedef gpio_pin< PORTA, 6 > PA6;
+typedef gpio_pin< PORTA, 7 > PA7;
+
+typedef gpio_pin< PORTB, 0 > PB0;
+typedef gpio_pin< PORTB, 1 > PB1;
+typedef gpio_pin< PORTB, 2 > PB2;
+typedef gpio_pin< PORTB, 3 > PB3;
+typedef gpio_pin< PORTB, 4 > PB4;
+typedef gpio_pin< PORTB, 5 > PB5;
+typedef gpio_pin< PORTB, 6 > PB6;
+typedef gpio_pin< PORTB, 7 > PB7;
+
+typedef gpio_pin< PORTC, 0 > PC0;
+typedef gpio_pin< PORTC, 1 > PC1;
+typedef gpio_pin< PORTC, 2 > PC2;
+typedef gpio_pin< PORTC, 3 > PC3;
+typedef gpio_pin< PORTC, 4 > PC4;
+typedef gpio_pin< PORTC, 5 > PC5;
+typedef gpio_pin< PORTC, 6 > PC6;
+typedef gpio_pin< PORTC, 7 > PC7;
+
+typedef gpio_pin< PORTD, 0 > PD0;
+typedef gpio_pin< PORTD, 1 > PD1;
+typedef gpio_pin< PORTD, 2 > PD2;
+typedef gpio_pin< PORTD, 3 > PD3;
+typedef gpio_pin< PORTD, 4 > PD4;
+typedef gpio_pin< PORTD, 5 > PD5;
+typedef gpio_pin< PORTD, 6 > PD6;
+typedef gpio_pin< PORTD, 7 > PD7;
+
+typedef gpio_pin< PORTE, 0 > PE0;
+typedef gpio_pin< PORTE, 1 > PE1;
+typedef gpio_pin< PORTE, 2 > PE2;
+typedef gpio_pin< PORTE, 3 > PE3;
+typedef gpio_pin< PORTE, 4 > PE4;
+typedef gpio_pin< PORTE, 5 > PE5;
+typedef gpio_pin< PORTE, 6 > PE6;
+typedef gpio_pin< PORTE, 7 > PE7;
+
+typedef gpio_pin< PORTF, 0 > PF0;
+typedef gpio_pin< PORTF, 1 > PF1;
+typedef gpio_pin< PORTF, 2 > PF2;
+typedef gpio_pin< PORTF, 3 > PF3;
+typedef gpio_pin< PORTF, 4 > PF4;
+typedef gpio_pin< PORTF, 5 > PF5;
+typedef gpio_pin< PORTF, 6 > PF6;
+typedef gpio_pin< PORTF, 7 > PF7;
+
+typedef gpio_pin< PORTH, 0 > PH0;
+typedef gpio_pin< PORTH, 1 > PH1;
+typedef gpio_pin< PORTH, 2 > PH2;
+typedef gpio_pin< PORTH, 3 > PH3;
+typedef gpio_pin< PORTH, 4 > PH4;
+typedef gpio_pin< PORTH, 5 > PH5;
+typedef gpio_pin< PORTH, 6 > PH6;
+typedef gpio_pin< PORTH, 7 > PH7;
+
+typedef gpio_pin< PORTJ, 0 > PJ0;
+typedef gpio_pin< PORTJ, 1 > PJ1;
+typedef gpio_pin< PORTJ, 2 > PJ2;
+typedef gpio_pin< PORTJ, 3 > PJ3;
+typedef gpio_pin< PORTJ, 4 > PJ4;
+typedef gpio_pin< PORTJ, 5 > PJ5;
+typedef gpio_pin< PORTJ, 6 > PJ6;
+typedef gpio_pin< PORTJ, 7 > PJ7;
+
+typedef gpio_pin< PORTK, 0 > PK0;
+typedef gpio_pin< PORTK, 1 > PK1;
+typedef gpio_pin< PORTK, 2 > PK2;
+typedef gpio_pin< PORTK, 3 > PK3;
+typedef gpio_pin< PORTK, 4 > PK4;
+typedef gpio_pin< PORTK, 5 > PK5;
+typedef gpio_pin< PORTK, 6 > PK6;
+typedef gpio_pin< PORTK, 7 > PK7;
+
+typedef gpio_pin< PORTQ, 0 > PQ0;
+typedef gpio_pin< PORTQ, 1 > PQ1;
+typedef gpio_pin< PORTQ, 2 > PQ2;
+typedef gpio_pin< PORTQ, 3 > PQ3;
+
+typedef gpio_pin< PORTR, 0 > PR0;
+typedef gpio_pin< PORTR, 1 > PR1;
+
+}   // namespace device
+
+#endif  // SEAL_HAL_DEVICE_FILE_XMEGA128A1U

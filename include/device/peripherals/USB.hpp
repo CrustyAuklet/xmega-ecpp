@@ -46,6 +46,7 @@ struct USB_EP_t {
 
     /// USB Endpoint Counter - 2 bytes
     struct CNT : public reg16_t<BASE_ADDRESS + 0x0002> {
+#warning "TODO: USB register is 16 bits and the generator can't handle that for now"
         typedef reg_field_t<BASE_ADDRESS + 0x0002, 0x8000, 15> ZLP;    //< Zero Length Packet using None
     };
 
@@ -55,8 +56,8 @@ struct USB_EP_t {
 
     /// Auxiliary Data - 2 bytes
     struct AUXDATA : public reg16_t<BASE_ADDRESS + 0x0006> {
-    };
-};
+    };};
+
 /**
  * USB
  * Universal Serial Bus
@@ -166,8 +167,8 @@ struct USB_t {
 
     /// Calibration Byte 1 - 1 bytes
     struct CAL1 : public reg8_t<BASE_ADDRESS + 0x003B> {
-    };
-};
+    };};
+
 /**
  * USB_EP_TABLE
  * USB Endpoint Table
@@ -279,76 +280,69 @@ struct USB_EP_TABLE_t {
     /// Endpoint 15
     USB_EP_t<BASE_ADDRESS + 0x00F8> EP15IN;
 
-};
-
-namespace USB {
 
     // Interrupt level
-    class INTLVL {
-    private:
-        enum INTLVL_ {
-            OFF_ = 0x00, // Interrupt disabled
-            LO_ = 0x01, // Low level
-            MED_ = 0x02, // Medium level
-            HI_ = 0x03, // High level
-        };
-        INTLVL_ value_;
+    class INTLVLv {
     public:
-        static const INTLVL OFF, LO, MED, HI;
-        explicit INTLVL(const INTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum INTLVL_ {
+            OFF = 0x00, // Interrupt disabled
+            LO = 0x01, // Low level
+            MED = 0x02, // Medium level
+            HI = 0x03, // High level
+        };
+        INTLVLv(const INTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // USB Endpoint Type
-    class EP_TYPE {
-    private:
-        enum EP_TYPE_ {
-            DISABLE_ = 0x00, // Endpoint Disabled
-            CONTROL_ = 0x01, // Control
-            BULK_ = 0x02, // Bulk/Interrupt
-            ISOCHRONOUS_ = 0x03, // Isochronous
-        };
-        EP_TYPE_ value_;
+    class EP_TYPEv {
     public:
-        static const EP_TYPE DISABLE, CONTROL, BULK, ISOCHRONOUS;
-        explicit EP_TYPE(const EP_TYPE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum EP_TYPE_ {
+            DISABLE = 0x00, // Endpoint Disabled
+            CONTROL = 0x01, // Control
+            BULK = 0x02, // Bulk/Interrupt
+            ISOCHRONOUS = 0x03, // Isochronous
+        };
+        EP_TYPEv(const EP_TYPE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // USB Endpoint Buffersize
-    class EP_BUFSIZE {
-    private:
+    class EP_BUFSIZEv {
+    public:
         enum EP_BUFSIZE_ {
-            _8_ = 0x00, // 8 bytes buffer size
-            _16_ = 0x01, // 16 bytes buffer size
-            _32_ = 0x02, // 32 bytes buffer size
-            _64_ = 0x03, // 64 bytes buffer size
-            _128_ = 0x04, // 128 bytes buffer size
-            _256_ = 0x05, // 256 bytes buffer size
-            _512_ = 0x06, // 512 bytes buffer size
-            _1023_ = 0x07, // 1023 bytes buffer size
+            _8 = 0x00, // 8 bytes buffer size
+            _16 = 0x01, // 16 bytes buffer size
+            _32 = 0x02, // 32 bytes buffer size
+            _64 = 0x03, // 64 bytes buffer size
+            _128 = 0x04, // 128 bytes buffer size
+            _256 = 0x05, // 256 bytes buffer size
+            _512 = 0x06, // 512 bytes buffer size
+            _1023 = 0x07, // 1023 bytes buffer size
         };
-        EP_BUFSIZE_ value_;
-    public:
-        static const EP_BUFSIZE _8, _16, _32, _64, _128, _256, _512, _1023;
-        explicit EP_BUFSIZE(const EP_BUFSIZE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // USB Interrupts
-    class INTERRUPTS {
+        EP_BUFSIZEv(const EP_BUFSIZE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
     private:
-        enum USB_VECTORS_ {
-            BUSEVENT_ = 0, // SOF, suspend, resume, reset bus event interrupts, crc, underflow, overflow and stall error interrupts
-            TRNCOMPL_ = 1, // Transaction complete interrupt
-        };
-        USB_VECTORS_ value_;
-    public:
-        static const USB BUSEVENT, TRNCOMPL;
-        explicit USB(const USB_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        uint8_t value_;
     };
 
-} // namespace USB
+    // USB ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            BUSEVENT = 0, // SOF, suspend, resume, reset bus event interrupts, crc, underflow, overflow and stall error interrupts
+            TRNCOMPL = 1, // Transaction complete interrupt
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+};
+
 } // namespace device

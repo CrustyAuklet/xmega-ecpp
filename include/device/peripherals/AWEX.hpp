@@ -81,25 +81,21 @@ struct AWEX_t {
     /// Output Override Enable - 1 bytes
     struct OUTOVEN : public reg8_t<BASE_ADDRESS + 0x000C> {
     };
-};
-
-namespace AWEX {
 
     // Fault Detect Action
-    class FDACT {
-    private:
-        enum FDACT_ {
-            NONE_ = 0x00, // No Fault Protection
-            CLEAROE_ = 0x01, // Clear Output Enable Bits
-            CLEARDIR_ = 0x03, // Clear I/O Port Direction Bits
-        };
-        FDACT_ value_;
+    class FDACTv {
     public:
-        static const FDACT NONE, CLEAROE, CLEARDIR;
-        explicit FDACT(const FDACT_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum FDACT_ {
+            NONE = 0x00, // No Fault Protection
+            CLEAROE = 0x01, // Clear Output Enable Bits
+            CLEARDIR = 0x03, // Clear I/O Port Direction Bits
+        };
+        FDACTv(const FDACT_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
+};
 
-} // namespace AWEX
 } // namespace device

@@ -80,61 +80,55 @@ struct DAC_t {
     /// Channel 1 Data - 2 bytes
     struct CH1DATA : public reg16_t<BASE_ADDRESS + 0x001A> {
     };
-};
-
-namespace DAC {
 
     // Output channel selection
-    class CHSEL {
-    private:
-        enum CHSEL_ {
-            SINGLE_ = 0x00, // Single channel operation (Channel 0 only)
-            SINGLE1_ = 0x01, // Single channel operation (Channel 1 only)
-            DUAL_ = 0x02, // Dual channel operation (Channel 0 and channel 1)
-        };
-        CHSEL_ value_;
+    class CHSELv {
     public:
-        static const CHSEL SINGLE, SINGLE1, DUAL;
-        explicit CHSEL(const CHSEL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CHSEL_ {
+            SINGLE = 0x00, // Single channel operation (Channel 0 only)
+            SINGLE1 = 0x01, // Single channel operation (Channel 1 only)
+            DUAL = 0x02, // Dual channel operation (Channel 0 and channel 1)
+        };
+        CHSELv(const CHSEL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Reference voltage selection
-    class REFSEL {
-    private:
-        enum REFSEL_ {
-            INT1V_ = 0x00, // Internal 1V 
-            AVCC_ = 0x01, // Analog supply voltage
-            AREFA_ = 0x02, // External reference on AREF on PORTA
-            AREFB_ = 0x03, // External reference on AREF on PORTB
-        };
-        REFSEL_ value_;
+    class REFSELv {
     public:
-        static const REFSEL INT1V, AVCC, AREFA, AREFB;
-        explicit REFSEL(const REFSEL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum REFSEL_ {
+            INT1V = 0x00, // Internal 1V 
+            AVCC = 0x01, // Analog supply voltage
+            AREFA = 0x02, // External reference on AREF on PORTA
+            AREFB = 0x03, // External reference on AREF on PORTB
+        };
+        REFSELv(const REFSEL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
     // Event channel selection
-    class EVSEL {
-    private:
-        enum EVSEL_ {
-            _0_ = 0x00, // Event Channel 0
-            _1_ = 0x01, // Event Channel 1
-            _2_ = 0x02, // Event Channel 2
-            _3_ = 0x03, // Event Channel 3
-            _4_ = 0x04, // Event Channel 4
-            _5_ = 0x05, // Event Channel 5
-            _6_ = 0x06, // Event Channel 6
-            _7_ = 0x07, // Event Channel 7
-        };
-        EVSEL_ value_;
+    class EVSELv {
     public:
-        static const EVSEL _0, _1, _2, _3, _4, _5, _6, _7;
-        explicit EVSEL(const EVSEL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum EVSEL_ {
+            _0 = 0x00, // Event Channel 0
+            _1 = 0x01, // Event Channel 1
+            _2 = 0x02, // Event Channel 2
+            _3 = 0x03, // Event Channel 3
+            _4 = 0x04, // Event Channel 4
+            _5 = 0x05, // Event Channel 5
+            _6 = 0x06, // Event Channel 6
+            _7 = 0x07, // Event Channel 7
+        };
+        EVSELv(const EVSEL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
+};
 
-} // namespace DAC
 } // namespace device

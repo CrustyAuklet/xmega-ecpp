@@ -13,7 +13,7 @@ namespace device {
 
 /**
  * TWI_MASTER
- * 
+ *
  * Size: 7 bytes
  */
 template <addressType BASE_ADDRESS>
@@ -62,10 +62,152 @@ struct TWI_MASTER_t {
     /// Data Register - 1 bytes
     struct DATA : public reg8_t<BASE_ADDRESS + 0x0006> {
     };
+
+    // Master Interrupt Level
+    class INTLVLv {
+    public:
+        enum INTLVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        INTLVLv(const INTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+    // Inactive Timeout
+    class TIMEOUTv {
+    public:
+        enum TIMEOUT_ {
+            DISABLED = 0x00, // Bus Timeout Disabled
+            _50US = 0x01, // 50 Microseconds
+            _100US = 0x02, // 100 Microseconds
+            _200US = 0x03, // 200 Microseconds
+        };
+        TIMEOUTv(const TIMEOUT_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+    // Master Command
+    class CMDv {
+    public:
+        enum CMD_ {
+            NOACT = 0x00, // No Action
+            REPSTART = 0x01, // Issue Repeated Start Condition
+            RECVTRANS = 0x02, // Receive or Transmit Data
+            STOP = 0x03, // Issue Stop Condition
+        };
+        CMDv(const CMD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+    // Master Bus State
+    class BUSSTATEv {
+    public:
+        enum BUSSTATE_ {
+            UNKNOWN = 0x00, // Unknown Bus State
+            IDLE = 0x01, // Bus is Idle
+            OWNER = 0x02, // This Module Controls The Bus
+            BUSY = 0x03, // The Bus is Busy
+        };
+        BUSSTATEv(const BUSSTATE_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+    static void enable() {
+        CTRLA::ENABLE::write(1);
+    }
+
+    static void disable() {
+        CTRLA::ENABLE::write(0);
+    }
+
+    static void enable_interrupts(const bool read, const bool write, const INTLVLv lvl) {
+        CTRLA::write(
+            lvl << CTRLA::INTLVL::SHIFT
+            | read  << CTRLA::RIEN::SHIFT
+            | write << CTRLA::WIEN::SHIFT
+            | CTRLA::read() & CTRLA::ENABLE::BIT_MASK
+        );
+    }
+
+    /// inactive bus timeout bits to a nonzero value will enable the inactive bus timeout supervisor
+    static void set_timout(const TIMEOUTv tmout) {
+        CTRLB::TIMEOUT::write(tmout);
+    }
+
+    /// When quick command is enabled, the corresponding interrupt flag is set immediately after the slave
+    /// acknowledges the address (read or write interrupt). At this point, software can issue either a STOP or a repeated START condition.
+    static void enable_quick_command(const bool enable) {
+        CTRLB::QCEN::write(enable);
+    }
+
+    /// enable quick command mode. This makes a ACK automatically when reading the DATA register
+    static void enable_smart_mode(const bool enable) {
+        CTRLB::SMEN::write(enable);
+    }
+
+    /// perform acknolwedge action followed by repeated stop condition
+    static void set_start(const bool ack = false) {
+        CTRLC::write( ack << CTRLC::ACKACT::SHIFT | CMDv::START << CTRLC::CMD::SHIFT );
+    }
+
+    /// perform acknolwedge action followed by repeated start condition
+    static void set_stop(const bool ack) {
+        CTRLC::write( ack << CTRLC::ACKACT::SHIFT | CMDv::STOP << CTRLC::CMD::SHIFT );
+    }
+
+    /// perform acknolwedge action followed by a byte receive. Does nothing in write mode
+    static void receive(const bool ack) {
+        CTRLC::write( ack << CTRLC::ACKACT::SHIFT | CMDv::BYTEREC << CTRLC::CMD::SHIFT );
+    }
+
+    static bool check_read_write_flags() {
+        return STATUS::read() & (STATUS::RIF::BIT_MASK | STATUS::WIF::BIT_MASK);
+    }
+
+    static void clear_interrupt_flags() {
+        STATUS::write( STATUS::RIF::BIT_MASK | STATUS::WIF::BIT_MASK | STATUS::BUSSTATE::read());
+    }
+
+    static void clear_bus_error() {
+        STATUS::write( STATUS::BUSERR::BIT_MASK | STATUS::BUSSTATE::read());
+    }
+
+    static void clear_arb_lost() {
+        STATUS::write( STATUS::ARBLOST::BIT_MASK | STATUS::BUSSTATE::read());
+    }
+
+    static void set_baud(const uint16_t PER_CLK, const uint32_t b, const uint8_t trise = 0) {
+        BAUD::write( ((((((float)PER_CLK / (float)b)) - 10 - ((float)PER_CLK * trise / 1000000))) / 2) );
+    }
+
+    static void write_address(const uint8_t addr) {
+        ADDR::write(addr);
+    }
+
+    static void write_data(const uint8_t addr) {
+        DATA::write(addr);
+    }
+
+    static uint8_t read_data() {
+        return DATA::read();
+    }
+
 };
+
 /**
  * TWI_SLAVE
- * 
+ *
  * Size: 6 bytes
  */
 template <addressType BASE_ADDRESS>
@@ -113,7 +255,96 @@ struct TWI_SLAVE_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0005, 0xFE, 1> ADDRMASK;    //< Address Mask using None
         typedef reg_field_t<BASE_ADDRESS + 0x0005, 0x01, 0> ADDREN;    //< Address Enable using None
     };
+
+    // Slave Interrupt Level
+    class INTLVLv {
+    public:
+        enum INTLVL_ {
+            OFF = 0x00, // Interrupt Disabled
+            LO = 0x01, // Low Level
+            MED = 0x02, // Medium Level
+            HI = 0x03, // High Level
+        };
+        INTLVLv(const INTLVL_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+    // Slave Command
+    class CMDv {
+    public:
+        enum CMD_ {
+            NOACT = 0x00, // No Action
+            COMPTRANS = 0x02, // Used To Complete a Transaction
+            RESPONSE = 0x03, // Used in Response to Address/Data Interrupt
+        };
+        CMDv(const CMD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+    /// enable the Data and/or address interrupt and set the level
+    static void set_interrupts(const bool data, const bool address, const bool stop, const INTLVLv lvl) {
+        CTRLA::write(
+            lvl << CTRLA::INTLVL::SHIFT
+            | data  << CTRLA::DIEN::SHIFT
+            | address << CTRLA::APIEN::SHIFT
+            | stop << CTRLA::PIEN::SHIFT
+            | CTRLA::read() & CTRLA::ENABLE::BIT_MASK
+        );
+    }
+
+    static void enable() {
+        CTRLA::ENABLE::write(1);
+    }
+
+    static void disable() {
+        CTRLA::ENABLE::write(0);
+    }
+
+    static void promiscuous_mode(const bool en) {
+        CTRLA::PMEN::write(en);
+    }
+
+    static void smart_mode(const bool en) {
+        CTRLA::SMEN::write(en);
+    }
+
+    static void clear_interrupt() {
+        STATUS::write( STATUS::DIF::BIT_MASK | STATUS::APIF::BIT_MASK );
+    }
+
+    static void clear_bus_errors() {
+        STATUS::write( STATUS::COLL::BIT_MASK | STATUS::BUSERR::BIT_MASK );
+    }
+
+    /// set the 7 bit slave adderss to respond to (bits 0-6). Reponds to general call as well if general_call is set to true
+    static void set_address(const uint8_t addr, const bool general_call = false) {
+        ADDR::write(addr<<1 | general_call);
+    }
+
+    /// sets a second address that the device will respond to, using a 7 bit address (lower 7 bits)
+    static void set_second_address(const uint8_t addr) {
+        ADDRMASK::write(addr<<1 | 0x1);
+    }
+
+    /// set bits in the 7-bit address that are ALWAYS matched. bottom 7 bits of the value.
+    static void set_addresss_mask(const uint8_t mask) {
+        ADDRMASK::write(mask<<1);
+    }
+
+    static void write_data(const uint8_t addr) {
+        DATA::write(addr);
+    }
+
+    static uint8_t read_data() {
+        DATA::read();
+    }
+
 };
+
 /**
  * TWI
  * Two-Wire Interface
@@ -133,135 +364,34 @@ struct TWI_t {
     /// TWI slave module
     TWI_SLAVE_t<BASE_ADDRESS + 0x0008> SLAVE;
 
+    // SDA Hold Time
+    class SDAHOLDv {
+    public:
+        enum SDAHOLD_ {
+            OFF = 0x00, // SDA Hold Time off
+            _50NS = 0x01, // SDA Hold Time 50 ns
+            _300NS = 0x02, // SDA Hold Time 300 ns
+            _400NS = 0x03, // SDA Hold Time 400 ns
+        };
+        SDAHOLDv(const SDAHOLD_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
+    // TWI ISR Vector Offsets (two bytes each)
+    class INTERRUPTS {
+    public:
+        enum INTERRUPTS_ {
+            TWIS = 0, // TWI Slave Interrupt
+            TWIM = 1, // TWI Master Interrupt
+        };
+        INTERRUPTS(const INTERRUPTS_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
+    };
+
 };
 
-namespace TWI {
-
-    // SDA Hold Time
-    class SDAHOLD {
-    private:
-        enum SDAHOLD_ {
-            OFF_ = 0x00, // SDA Hold Time off
-            _50NS_ = 0x01, // SDA Hold Time 50 ns
-            _300NS_ = 0x02, // SDA Hold Time 300 ns
-            _400NS_ = 0x03, // SDA Hold Time 400 ns
-        };
-        SDAHOLD_ value_;
-    public:
-        static const SDAHOLD OFF, _50NS, _300NS, _400NS;
-        explicit SDAHOLD(const SDAHOLD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-    // Master Interrupt Level
-    class MASTER_INTLVL {
-    private:
-        enum MASTER_INTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        MASTER_INTLVL_ value_;
-    public:
-        static const MASTER_INTLVL OFF, LO, MED, HI;
-        explicit MASTER_INTLVL(const MASTER_INTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-    // Inactive Timeout
-    class MASTER_TIMEOUT {
-    private:
-        enum MASTER_TIMEOUT_ {
-            DISABLED_ = 0x00, // Bus Timeout Disabled
-            _50US_ = 0x01, // 50 Microseconds
-            _100US_ = 0x02, // 100 Microseconds
-            _200US_ = 0x03, // 200 Microseconds
-        };
-        MASTER_TIMEOUT_ value_;
-    public:
-        static const MASTER_TIMEOUT DISABLED, _50US, _100US, _200US;
-        explicit MASTER_TIMEOUT(const MASTER_TIMEOUT_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-    // Master Command
-    class MASTER_CMD {
-    private:
-        enum MASTER_CMD_ {
-            NOACT_ = 0x00, // No Action
-            REPSTART_ = 0x01, // Issue Repeated Start Condition
-            RECVTRANS_ = 0x02, // Receive or Transmit Data
-            STOP_ = 0x03, // Issue Stop Condition
-        };
-        MASTER_CMD_ value_;
-    public:
-        static const MASTER_CMD NOACT, REPSTART, RECVTRANS, STOP;
-        explicit MASTER_CMD(const MASTER_CMD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-    // Master Bus State
-    class MASTER_BUSSTATE {
-    private:
-        enum MASTER_BUSSTATE_ {
-            UNKNOWN_ = 0x00, // Unknown Bus State
-            IDLE_ = 0x01, // Bus is Idle
-            OWNER_ = 0x02, // This Module Controls The Bus
-            BUSY_ = 0x03, // The Bus is Busy
-        };
-        MASTER_BUSSTATE_ value_;
-    public:
-        static const MASTER_BUSSTATE UNKNOWN, IDLE, OWNER, BUSY;
-        explicit MASTER_BUSSTATE(const MASTER_BUSSTATE_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-    // Slave Interrupt Level
-    class SLAVE_INTLVL {
-    private:
-        enum SLAVE_INTLVL_ {
-            OFF_ = 0x00, // Interrupt Disabled
-            LO_ = 0x01, // Low Level
-            MED_ = 0x02, // Medium Level
-            HI_ = 0x03, // High Level
-        };
-        SLAVE_INTLVL_ value_;
-    public:
-        static const SLAVE_INTLVL OFF, LO, MED, HI;
-        explicit SLAVE_INTLVL(const SLAVE_INTLVL_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-    // Slave Command
-    class SLAVE_CMD {
-    private:
-        enum SLAVE_CMD_ {
-            NOACT_ = 0x00, // No Action
-            COMPTRANS_ = 0x02, // Used To Complete a Transaction
-            RESPONSE_ = 0x03, // Used in Response to Address/Data Interrupt
-        };
-        SLAVE_CMD_ value_;
-    public:
-        static const SLAVE_CMD NOACT, COMPTRANS, RESPONSE;
-        explicit SLAVE_CMD(const SLAVE_CMD_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-
-    // TWI Interrupts
-    class INTERRUPTS {
-    private:
-        enum TWI_VECTORS_ {
-            TWIS_ = 0, // TWI Slave Interrupt
-            TWIM_ = 1, // TWI Master Interrupt
-        };
-        TWI_VECTORS_ value_;
-    public:
-        static const TWI TWIS, TWIM;
-        explicit TWI(const TWI_VECTORS_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
-    };
-
-} // namespace TWI
 } // namespace device

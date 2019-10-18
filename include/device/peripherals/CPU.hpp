@@ -63,24 +63,20 @@ struct CPU_t {
         typedef reg_field_t<BASE_ADDRESS + 0x000F, 0x02, 1> Z;    //< Zero Flag using None
         typedef reg_field_t<BASE_ADDRESS + 0x000F, 0x01, 0> C;    //< Carry Flag using None
     };
-};
-
-namespace CPU {
 
     // CCP signatures
-    class CCP {
-    private:
-        enum CCP_ {
-            SPM_ = 0x9D, // SPM Instruction Protection
-            IOREG_ = 0xD8, // IO Register Protection
-        };
-        CCP_ value_;
+    class CCPv {
     public:
-        static const CCP SPM, IOREG;
-        explicit CCP(const CCP_& v) : value_(v) {}
-        operator uint8_t() { return static_cast<uint8_t>(value_); }
+        enum CCP_ {
+            SPM = 0x9D, // SPM Instruction Protection
+            IOREG = 0xD8, // IO Register Protection
+        };
+        CCPv(const CCP_& v) : value_(v) {}
+        operator uint8_t() const { return value_; }
+    private:
+        uint8_t value_;
     };
 
+};
 
-} // namespace CPU
 } // namespace device

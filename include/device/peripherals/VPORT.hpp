@@ -36,10 +36,7 @@ struct VPORT_t {
         typedef reg_field_t<BASE_ADDRESS + 0x0003, 0x02, 1> INT1IF;    //< Port Interrupt 1 Flag using None
         typedef reg_field_t<BASE_ADDRESS + 0x0003, 0x01, 0> INT0IF;    //< Port Interrupt 0 Flag using None
     };
+
 };
 
-namespace VPORT {
-
-
-} // namespace VPORT
 } // namespace device
